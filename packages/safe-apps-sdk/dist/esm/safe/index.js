@@ -19,7 +19,9 @@ class Safe {
         return response.data;
     }
     async getInfo() {
+        console.log('getInfo', { instanceID: this.communicator.INSTANCE_ID, comm: this.communicator });
         const response = await this.communicator.send(Methods.getSafeInfo, undefined);
+        console.log('getInfo response', { response });
         return response.data;
     }
     // There is a possibility that this method will change because we may add pagination to the endpoint

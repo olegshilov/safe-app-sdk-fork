@@ -10,6 +10,8 @@ class PostMessageCommunicator implements Communicator {
   private callbacks = new Map<string, Callback>();
   private debugMode = false;
   private isServer = typeof window === 'undefined';
+  public readonly INSTANCE_ID =
+    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   constructor(allowedOrigins: RegExp[] | null = null, debugMode = false) {
     this.allowedOrigins = allowedOrigins;
@@ -56,12 +58,14 @@ class PostMessageCommunicator implements Communicator {
   };
 
   public send = <M extends Methods, P, R>(method: M, params: P): Promise<SuccessResponse<R>> => {
+    console.log('communicator send', method, params);
     const request = MessageFormatter.makeRequest(method, params);
-
+    console.log('communicator request', request);
     if (this.isServer) {
       throw new Error("Window doesn't exist");
     }
 
+    console.log('communicator sending message', request);
     window.parent.postMessage(request, '*');
     return new Promise((resolve, reject) => {
       this.callbacks.set(request.id, (response: Response<R>) => {

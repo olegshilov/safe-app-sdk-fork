@@ -6,12 +6,14 @@ const utils_1 = require("./utils");
 // The API is based on Ethereum JavaScript API Provider Standard. Link: https://eips.ethereum.org/EIPS/eip-1193
 class SafeAppProvider extends events_1.EventEmitter {
     constructor(safe, sdk) {
+        console.log('SafeAppProvider constructor', { safe, sdk });
         super();
         this.submittedTxs = new Map();
         this.safe = safe;
         this.sdk = sdk;
     }
     async connect() {
+        console.log('SafeAppProvider connect');
         this.emit('connect', { chainId: this.chainId });
         return;
     }

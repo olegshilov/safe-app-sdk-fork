@@ -34,11 +34,12 @@ class Safe {
   }
 
   async getInfo(): Promise<SafeInfoExtended> {
+    console.log('getInfo', { instanceID: (this.communicator as any).INSTANCE_ID, comm: this.communicator });
     const response = await this.communicator.send<Methods.getSafeInfo, undefined, SafeInfoExtended>(
       Methods.getSafeInfo,
       undefined,
     );
-
+    console.log('getInfo response', { response });
     return response.data;
   }
 

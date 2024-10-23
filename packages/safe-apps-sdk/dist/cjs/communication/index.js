@@ -21,6 +21,7 @@ class PostMessageCommunicator {
         this.callbacks = new Map();
         this.debugMode = false;
         this.isServer = typeof window === 'undefined';
+        this.INSTANCE_ID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         this.isValidMessage = ({ origin, data, source }) => {
             const emptyOrMalformed = !data;
             const sentFromParentEl = !this.isServer && source === window.parent;
@@ -50,10 +51,13 @@ class PostMessageCommunicator {
             }
         };
         this.send = (method, params) => {
+            console.log('communicator send', method, params);
             const request = messageFormatter_js_1.MessageFormatter.makeRequest(method, params);
+            console.log('communicator request', request);
             if (this.isServer) {
                 throw new Error("Window doesn't exist");
             }
+            console.log('communicator sending message', request);
             window.parent.postMessage(request, '*');
             return new Promise((resolve, reject) => {
                 this.callbacks.set(request.id, (response) => {

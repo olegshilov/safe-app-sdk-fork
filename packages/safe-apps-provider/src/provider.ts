@@ -10,12 +10,14 @@ export class SafeAppProvider extends EventEmitter implements EIP1193Provider {
   private submittedTxs = new Map<string, Web3TransactionObject>();
 
   constructor(safe: SafeInfo, sdk: SafeAppsSDK) {
+    console.log('SafeAppProvider constructor', { safe, sdk });
     super();
     this.safe = safe;
     this.sdk = sdk;
   }
 
   async connect(): Promise<void> {
+    console.log('SafeAppProvider connect');
     this.emit('connect', { chainId: this.chainId });
     return;
   }
